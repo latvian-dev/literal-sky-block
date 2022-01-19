@@ -1,0 +1,20 @@
+{
+	"type": "minecraft:crafting_shaped",
+	"pattern": [
+		"SSS",
+		"SGS",
+		"SSS"
+	],
+	"key": {
+		"S": {
+			"item": "minecraft:stone"
+		},
+		"G": {
+			"item": "minecraft:chorus_fruit"
+		}
+	},
+	"result": {
+		"item": "literalskyblock:end_sky_block",
+		"count": 8
+	}
+}

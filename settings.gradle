@@ -1,0 +1,10 @@
+pluginManagement {
+	repositories {
+		maven { url "https://maven.creeperhost.net/" }
+		maven { url "https://maven.shedaniel.me/" }
+		maven { url "https://server.bbkr.space/artifactory/libs-release" }
+		gradlePluginPortal()
+	}
+}
+
+rootProject.name = 'Literal-Sky-Block'

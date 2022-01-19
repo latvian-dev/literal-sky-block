@@ -1,0 +1,14 @@
+{
+	"required": true,
+	"package": "dev.latvian.mods.literalskyblock.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+	],
+	"client": [
+		"LevelRendererMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	},
+	"minVersion": "0.8"
+}
