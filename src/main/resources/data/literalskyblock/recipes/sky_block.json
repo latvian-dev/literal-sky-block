@@ -7,10 +7,10 @@
 	],
 	"key": {
 		"S": {
-			"item": "minecraft:stone"
+			"tag": "forge:stone"
 		},
 		"G": {
-			"item": "minecraft:glowstone_dust"
+			"item": "minecraft:amethyst_shard"
 		}
 	},
 	"result": {

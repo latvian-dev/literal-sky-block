@@ -7,7 +7,7 @@
 			"entries": [
 				{
 					"type": "minecraft:item",
-					"name": "literalskyblock:end_sky_block"
+					"name": "literalskyblock:void_block"
 				}
 			],
 			"conditions": [

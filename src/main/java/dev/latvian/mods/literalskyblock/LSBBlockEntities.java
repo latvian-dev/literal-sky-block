@@ -10,5 +10,5 @@ public interface LSBBlockEntities {
 	DeferredRegister<BlockEntityType<?>> REGISTER = DeferredRegister.create(ForgeRegistries.BLOCK_ENTITIES, LiteralSkyBlock.MOD_ID);
 
 	Supplier<BlockEntityType<SkyBlockEntity>> SKY_BLOCK = REGISTER.register("sky_block", () -> BlockEntityType.Builder.of(SkyBlockEntity::new, LSBBlocks.SKY_BLOCK.get()).build(null));
-	Supplier<BlockEntityType<EndSkyBlockEntity>> END_SKY_BLOCK = REGISTER.register("end_sky_block", () -> BlockEntityType.Builder.of(EndSkyBlockEntity::new, LSBBlocks.END_SKY_BLOCK.get()).build(null));
+	Supplier<BlockEntityType<VoidBlockEntity>> VOID_BLOCK = REGISTER.register("void_block", () -> BlockEntityType.Builder.of(VoidBlockEntity::new, LSBBlocks.VOID_BLOCK.get()).build(null));
 }

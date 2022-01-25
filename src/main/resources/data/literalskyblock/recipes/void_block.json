@@ -7,14 +7,14 @@
 	],
 	"key": {
 		"S": {
-			"item": "minecraft:stone"
+			"item": "literalskyblock:sky_block"
 		},
 		"G": {
 			"item": "minecraft:chorus_fruit"
 		}
 	},
 	"result": {
-		"item": "literalskyblock:end_sky_block",
+		"item": "literalskyblock:void_block",
 		"count": 8
 	}
 }
