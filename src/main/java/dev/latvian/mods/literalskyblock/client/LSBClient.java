@@ -135,7 +135,7 @@ public class LSBClient extends LSBCommon {
 		final boolean hasSpecialFog = mc.level.effects().isFoggyAt(Mth.floor(cameraPos.x), Mth.floor(cameraPos.z)) || mc.gui.getBossOverlay().shouldCreateWorldFog();
 		FogRenderer.setupFog(camera, FogRenderer.FogMode.FOG_SKY, renderDistance, hasSpecialFog, delta);
 		RenderSystem.setShader(GameRenderer::getPositionShader);
-		levelRenderer.renderSky(poseStack, projectionMatrix, delta, () -> FogRenderer.setupFog(camera, FogRenderer.FogMode.FOG_SKY, renderDistance, hasSpecialFog, delta));
+		levelRenderer.renderSky(poseStack, projectionMatrix, delta, camera, false, () -> FogRenderer.setupFog(camera, FogRenderer.FogMode.FOG_SKY, renderDistance, hasSpecialFog, delta));
 
 		PoseStack modelViewStack = RenderSystem.getModelViewStack();
 		modelViewStack.pushPose();
