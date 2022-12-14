@@ -34,6 +34,9 @@ loom {
 }
 
 repositories {
+	maven {
+		url "https://cursemaven.com"
+	}
 }
 
 dependencies {
@@ -43,6 +46,11 @@ dependencies {
 	mappings loom.layered() {
 		officialMojangMappings()
 	}
+
+	modCompileOnly("curse.maven:oculus-581495:3929520")
+
+	modLocalRuntime modImplementation("curse.maven:oculus-581495:3929520")
+	modLocalRuntime modImplementation("curse.maven:rubidium-574856:4024781")
 }
 
 processResources {

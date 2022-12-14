@@ -11,6 +11,7 @@ import com.mojang.math.Matrix4f;
 import dev.latvian.mods.literalskyblock.LSBBlockEntities;
 import dev.latvian.mods.literalskyblock.LSBCommon;
 import dev.latvian.mods.literalskyblock.LiteralSkyBlock;
+import dev.latvian.mods.literalskyblock.integration.IrisCompat;
 import net.minecraft.client.Camera;
 import net.minecraft.client.CloudStatus;
 import net.minecraft.client.Minecraft;
@@ -29,6 +30,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RegisterShadersEvent;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
@@ -45,6 +47,7 @@ public class LSBClient extends LSBCommon {
 	private static TextureTarget skyRenderTarget;
 	public static boolean updateSky = false;
 	private static boolean isRenderingSky = false;
+	private static boolean irisLoaded = false;
 
 	public static ShaderInstance getSkyShader() {
 		return skyShader;
@@ -101,6 +104,7 @@ public class LSBClient extends LSBCommon {
 			skyRenderTarget = new TextureTarget(skyWidth, skyHeight, true, Minecraft.ON_OSX);
 		}
 
+		if (irisLoaded) IrisCompat.preRender(mc.levelRenderer);
 		mc.gameRenderer.setRenderBlockOutline(false);
 		mc.levelRenderer.graphicsChanged();
 		skyRenderTarget.bindWrite(true);
@@ -115,9 +119,14 @@ public class LSBClient extends LSBCommon {
 		skyRenderTarget.unbindWrite();
 		mc.levelRenderer.graphicsChanged();
 		mainRenderTarget.bindWrite(true);
+		if (irisLoaded) IrisCompat.postRender(mc.levelRenderer);
 	}
 
 	public static void renderActualSky(Minecraft mc, RenderLevelLastEvent event) {
+		if (mc == null || mc.level == null || mc.player == null) {
+			return;
+		}
+
 		PoseStack poseStack = event.getPoseStack();
 		final float delta = event.getPartialTick();
 		Matrix4f projectionMatrix = event.getProjectionMatrix();
@@ -160,6 +169,7 @@ public class LSBClient extends LSBCommon {
 
 	@Override
 	public void init() {
+		irisLoaded = ModList.get().isLoaded("oculus");
 	}
 
 	@SubscribeEvent
