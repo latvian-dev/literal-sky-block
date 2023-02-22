@@ -106,7 +106,7 @@ public class LSBClient extends LSBCommon {
 
 		if (irisLoaded) IrisCompat.preRender(mc.levelRenderer);
 		mc.gameRenderer.setRenderBlockOutline(false);
-		mc.levelRenderer.graphicsChanged();
+		// mc.levelRenderer.graphicsChanged();
 		skyRenderTarget.bindWrite(true);
 
 		isRenderingSky = true;
@@ -117,7 +117,7 @@ public class LSBClient extends LSBCommon {
 		mc.gameRenderer.setRenderBlockOutline(true);
 		skyRenderTarget.unbindRead();
 		skyRenderTarget.unbindWrite();
-		mc.levelRenderer.graphicsChanged();
+		// mc.levelRenderer.graphicsChanged();
 		mainRenderTarget.bindWrite(true);
 		if (irisLoaded) IrisCompat.postRender(mc.levelRenderer);
 	}
