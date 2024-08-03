@@ -11,9 +11,11 @@ import java.util.Arrays;
 
 public class SkyBlockEntity extends BlockEntity {
 	private final Boolean[] shouldRender = new Boolean[6];
+	public final ProjectionType projection;
 
 	public SkyBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
 		super(type, pos, state);
+		this.projection = ((SkyBlock) state.getBlock()).projection;
 	}
 
 	public SkyBlockEntity(BlockPos pos, BlockState state) {

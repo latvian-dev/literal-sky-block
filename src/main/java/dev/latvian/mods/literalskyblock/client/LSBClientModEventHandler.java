@@ -3,6 +3,8 @@ package dev.latvian.mods.literalskyblock.client;
 import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import dev.latvian.mods.literalskyblock.LSBBlockEntities;
 import dev.latvian.mods.literalskyblock.LiteralSkyBlock;
+import dev.latvian.mods.literalskyblock.ProjectionType;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.neoforged.api.distmarker.Dist;
@@ -18,7 +20,9 @@ public class LSBClientModEventHandler {
 	@SubscribeEvent
 	public static void setup(FMLClientSetupEvent event) {
 		BlockEntityRenderers.register(LSBBlockEntities.SKY_BLOCK.get(), SkyBlockEntityRenderer::new);
-		BlockEntityRenderers.register(LSBBlockEntities.VOID_BLOCK.get(), SkyBlockEntityRenderer::new);
+
+		ProjectionType.SKY.renderType = LSBClient.SKY_RENDER_TYPE;
+		ProjectionType.VOID.renderType = RenderType.endGateway();
 	}
 
 	@SubscribeEvent

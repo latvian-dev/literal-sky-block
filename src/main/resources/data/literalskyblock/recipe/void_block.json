@@ -7,14 +7,14 @@
 	],
 	"key": {
 		"S": {
-			"tag": "forge:stone"
+			"item": "literalskyblock:sky_block"
 		},
 		"G": {
-			"item": "minecraft:amethyst_shard"
+			"item": "minecraft:chorus_fruit"
 		}
 	},
 	"result": {
-		"item": "literalskyblock:sky_block",
+		"id": "literalskyblock:void_block",
 		"count": 8
 	}
 }

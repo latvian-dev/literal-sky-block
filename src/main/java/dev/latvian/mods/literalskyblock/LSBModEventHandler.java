@@ -11,8 +11,9 @@ public class LSBModEventHandler {
 	@SubscribeEvent
 	public static void buildCreativeModeTabContents(BuildCreativeModeTabContentsEvent event) {
 		if (event.getTabKey() == CreativeModeTabs.BUILDING_BLOCKS) {
-			event.accept(LSBItems.SKY_BLOCK, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
-			event.accept(LSBItems.VOID_BLOCK, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			for (var p : ProjectionType.VALUES) {
+				event.accept(p.skyBlockItem, CreativeModeTab.TabVisibility.PARENT_AND_SEARCH_TABS);
+			}
 		}
 	}
 }

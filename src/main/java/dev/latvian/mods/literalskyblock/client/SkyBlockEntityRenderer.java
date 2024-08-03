@@ -3,7 +3,6 @@ package dev.latvian.mods.literalskyblock.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import dev.latvian.mods.literalskyblock.SkyBlockEntity;
-import dev.latvian.mods.literalskyblock.VoidBlockEntity;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -17,7 +16,7 @@ public class SkyBlockEntityRenderer implements BlockEntityRenderer<SkyBlockEntit
 
 	@Override
 	public void render(SkyBlockEntity entity, float delta, PoseStack poseStack, MultiBufferSource source, int light1, int light2) {
-		renderCube(entity, poseStack.last().pose(), source.getBuffer(entity instanceof VoidBlockEntity ? RenderType.endGateway() : LSBClient.SKY_RENDER_TYPE));
+		renderCube(entity, poseStack.last().pose(), source.getBuffer(entity instanceof SkyBlockEntity e ? (RenderType) e.projection.renderType : RenderType.endGateway()));
 	}
 
 	private void renderCube(SkyBlockEntity entity, Matrix4f matrix, VertexConsumer buffer) {
