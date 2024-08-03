@@ -1,10 +1,13 @@
 pluginManagement {
 	repositories {
-		maven { url "https://maven.creeperhost.net/" }
-		maven { url "https://maven.shedaniel.me/" }
-		maven { url "https://server.bbkr.space/artifactory/libs-release" }
 		gradlePluginPortal()
+		mavenCentral()
+		maven { url "https://maven.creeperhost.net/" }
 	}
+}
+
+plugins {
+	id 'org.gradle.toolchains.foojay-resolver-convention' version '0.8.0'
 }
 
 rootProject.name = 'Literal-Sky-Block'

@@ -1,0 +1,30 @@
+modLoader = "javafml"
+loaderVersion = "[2,)"
+issueTrackerURL = "https://github.com/latvian-dev/literal-sky-block/issues"
+license = "MIT"
+
+[[mods]]
+modId = "literalskyblock"
+version = "${version}"
+displayName = "Literal Sky Block"
+authors = "latvian.dev"
+description = '''
+This mod adds blocks that simulate the sky
+'''
+
+[[dependencies.literalskyblock]]
+modId = "neoforge"
+mandatory = true
+versionRange = "[21.0.148,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.literalskyblock]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.21,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[mixins]]
+config = "literalskyblock.mixins.json"

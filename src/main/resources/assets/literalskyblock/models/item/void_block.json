@@ -1,6 +1,3 @@
 {
-	"parent": "minecraft:block/cube_all",
-	"textures": {
-		"all": "literalskyblock:block/void_block"
-	}
+	"parent": "literalskyblock:block/void_block"
 }

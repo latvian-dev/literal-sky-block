@@ -1,7 +1,10 @@
 package dev.latvian.mods.literalskyblock.client;
 
-import net.minecraft.client.renderer.LightTexture;
+import com.mojang.blaze3d.pipeline.TextureTarget;
+import net.minecraft.client.Camera;
+import net.minecraft.client.DeltaTracker;
+import net.minecraft.client.renderer.GameRenderer;
 
 public interface LevelRendererLSB {
-	void renderSnowAndRainLSB(LightTexture arg, float g, double d, double e, double h);
+	void lsb$renderSky(DeltaTracker deltaTracker, Camera camera, GameRenderer gameRenderer, TextureTarget target);
 }

@@ -1,7 +1,7 @@
 {
 	"variants": {
 		"": {
-			"model": "literalskyblock:block/sky_block"
+			"model": "literalskyblock:block/void_block"
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package dev.latvian.mods.literalskyblock.integration;
 
+/*
 import com.mojang.logging.LogUtils;
 import net.coderbot.iris.Iris;
 import net.coderbot.iris.pipeline.WorldRenderingPhase;
@@ -54,3 +55,4 @@ public class IrisCompat {
         return IrisApi.getInstance().isShaderPackInUse();
     }
 }
+ */

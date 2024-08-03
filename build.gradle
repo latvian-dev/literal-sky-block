@@ -1,79 +1,112 @@
+import java.time.Instant
+
 plugins {
-	id "dev.architectury.loom" version "0.12.0-SNAPSHOT"
+	id 'base'
+	id 'java'
 	id 'maven-publish'
-	id "com.matthewprenger.cursegradle" version "1.4.0"
+	id 'net.neoforged.moddev' version "1.0.14"
+	// https://maven.architectury.dev/me/shedaniel/unified-publishing/maven-metadata.xml
+	id "me.shedaniel.unified-publishing" version "0.1.13"
 }
 
-apply from: 'https://files.saps.dev/ci/git-md-changelog.gradle'
+ext.ENV = System.getenv()
+def isLocal = !ENV.containsKey("GITHUB_RUN_NUMBER")
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = 17
-
-def ENV = System.getenv()
-version = "${mod_version}-build.${ENV.GITHUB_RUN_NUMBER ?: 9999}"
-archivesBaseName = project.archives_base_name
+version = "${mod_version}-${isLocal ? "local.${Instant.now().epochSecond}" : "build.${ENV.GITHUB_RUN_NUMBER}"}"
 group = project.maven_group
+base.archivesBaseName = project.archives_base_name
 
-loom {
-	silentMojangMappingsLicense()
+neoForge {
+	version = project.neoforge_version
 
-	forge {
-		mixinConfigs = [
-				"${project.mod_id}.mixins.json"
-		]
-
-		dataGen {
-			mod project.mod_id
+	runs {
+		configureEach {
+			logLevel = org.slf4j.event.Level.INFO
 		}
 
-		launches {
-			data {
-				arg "--existing", file("src/main/resources").absolutePath
+		client {
+			client()
+
+			if (ENV.MC_CLIENT_ARGS) {
+				programArguments.addAll(ENV.MC_CLIENT_ARGS.split(' '))
 			}
+
+			jvmArguments.addAll("-XX:+IgnoreUnrecognizedVMOptions", "-XX:+AllowEnhancedClassRedefinition")
+			gameDirectory = file 'run'
+		}
+
+		server {
+			server()
+			programArgument("--nogui")
+			gameDirectory = file 'run_server'
 		}
 	}
-}
 
-repositories {
-	maven {
-		url "https://cursemaven.com"
-	}
-}
-
-dependencies {
-	minecraft "com.mojang:minecraft:${project.minecraft_version}"
-	forge "net.minecraftforge:forge:${project.minecraft_version}-${project.forge_version}"
-
-	mappings loom.layered() {
-		officialMojangMappings()
+	mods {
+		literalskyblock {
+			sourceSet sourceSets.main
+		}
 	}
 
-	modCompileOnly("curse.maven:oculus-581495:3929520")
-
-	modLocalRuntime modImplementation("curse.maven:oculus-581495:3929520")
-	modLocalRuntime modImplementation("curse.maven:rubidium-574856:4024781")
-}
-
-processResources {
-	inputs.property "version", project.version
-
-	filesMatching("META-INF/mods.toml") {
-		expand "version": project.version
+	parchment {
+		minecraftVersion = minecraft_version
+		mappingsVersion = parchment_version
 	}
 }
 
 compileJava {
 	options.encoding = "UTF-8"
+	options.release.set(21)
 }
 
 java {
+	sourceCompatibility = targetCompatibility = '21'
 	withSourcesJar()
 }
 
-jar {
-	from("LICENSE") {
-		rename { "${it}_${project.archivesBaseName}" }
+repositories {
+	mavenLocal()
+	mavenCentral()
+
+	maven {
+		url "https://maven.neoforged.net/releases"
 	}
 
+	maven {
+		name = 'ParchmentMC'
+		url = 'https://maven.parchmentmc.org'
+		content {
+			includeGroup "org.parchmentmc.data"
+		}
+	}
+
+	maven {
+		url "https://cursemaven.com"
+		content {
+			includeGroup "curse.maven"
+		}
+	}
+}
+
+dependencies {
+	// compileOnly("curse.maven:oculus-581495:5299671")
+	// compileOnly("curse.maven:rubidium-574856:4952685")
+}
+
+processResources {
+	def toReplace = [
+			"version": project.version,
+	]
+
+	println("[Process Resources] Replacing properties in resources: " + toReplace)
+
+	inputs.properties toReplace
+	filesMatching("META-INF/neoforge.mods.toml") {
+		expand toReplace
+	}
+}
+
+jar {
 	manifest {
 		attributes([
 				"Specification-Title"     : project.mod_id,
@@ -87,40 +120,66 @@ jar {
 	}
 }
 
+unifiedPublishing {
+	project {
+		releaseType = "${ENV.RELEASE_TYPE ?: 'release'}"
+		gameVersions = [
+				rootProject.minecraft_version
+		]
+		gameLoaders = ["neoforge"]
+		displayName = "$mod_name NeoForge $project.version"
+		mainPublication jar
+
+		if (ENV.CURSEFORGE_KEY) {
+			curseforge {
+				token = ENV.CURSEFORGE_KEY
+				id = project.curseforge_id
+			}
+		}
+
+		if (ENV.MODRINTH_TOKEN) {
+			modrinth {
+				token = ENV.MODRINTH_TOKEN
+				id = project.modrinth_id
+				version = "$project.version+$project.name"
+			}
+		}
+	}
+}
+
 publishing {
 	publications {
-		mavenForge(MavenPublication) {
-			artifactId = rootProject.archivesBaseName
+		mavenNeoForge(MavenPublication) {
+			artifactId = archives_base_name
 			from components.java
 		}
 	}
 
 	repositories {
-		repositories {
-			if (ENV.NANITE_DEPLOY) {
-				maven {
-					url "https://maven.nanite.dev/releases"
-					credentials {
-						username = "nanite"
-						password = "${ENV.NANITE_DEPLOY}"
-					}
+		if (ENV.MAVEN_TOKEN) {
+			maven {
+				url "https://maven.latvian.dev/releases"
+				credentials {
+					username = "lat"
+					password = "${ENV.MAVEN_TOKEN}"
+				}
+			}
+		}
+
+		if (ENV.SAPS_TOKEN) {
+			maven {
+				url "https://maven.saps.dev/releases"
+				credentials {
+					username = "latvian"
+					password = "${ENV.SAPS_TOKEN}"
 				}
 			}
 		}
 	}
 }
 
-if (ENV.CURSE_DEPLOY) {
-	curseforge {
-		apiKey = ENV.CURSE_DEPLOY
-		project {
-			id = project.curseforge_id
-			releaseType = project.curseforge_type
-			addGameVersion "Forge"
-			addGameVersion "${minecraft_version}"
-			mainArtifact(remapJar)
-			changelog = getGitChangelog()
-			changelogType = 'markdown'
-		}
+afterEvaluate {
+	tasks.withType(JavaCompile) {
+		options.compilerArgs << "-Xmaxerrs" << "1000"
 	}
 }
