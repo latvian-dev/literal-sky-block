@@ -4,6 +4,7 @@ import com.mojang.logging.LogUtils;
 import net.coderbot.iris.Iris;
 import net.coderbot.iris.pipeline.WorldRenderingPhase;
 import net.coderbot.iris.pipeline.WorldRenderingPipeline;
+import net.irisshaders.iris.api.v0.IrisApi;
 import net.minecraft.client.renderer.LevelRenderer;
 import org.slf4j.Logger;
 
@@ -31,8 +32,8 @@ public class IrisCompat {
         try {
             final WorldRenderingPipeline pipeline = Iris.getPipelineManager().preparePipeline(Iris.getCurrentDimension());
             PIPELINE.set(renderer, pipeline);
-            pipeline.beginLevelRendering();
-            pipeline.setPhase(WorldRenderingPhase.NONE);
+            //pipeline.beginLevelRendering();
+            pipeline.setOverridePhase(WorldRenderingPhase.NONE);
         } catch (ReflectiveOperationException e) {
             LOGGER.error("Exception in preRender", e);
         }
@@ -42,10 +43,14 @@ public class IrisCompat {
         if (PIPELINE == null) return;
         try {
             final WorldRenderingPipeline pipeline = (WorldRenderingPipeline)PIPELINE.get(renderer);
-            pipeline.finalizeLevelRendering();
+            //pipeline.finalizeLevelRendering();
             PIPELINE.set(renderer, null);
         } catch (ReflectiveOperationException e) {
             LOGGER.error("Exception in postRender", e);
         }
+    }
+
+    public static boolean shadersEnabled() {
+        return IrisApi.getInstance().isShaderPackInUse();
     }
 }
