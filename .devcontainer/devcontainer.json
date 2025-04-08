@@ -1,0 +1,16 @@
+{
+    "name": "Java 17 + Gradle",
+    "build": {
+      "dockerfile": "Dockerfile"
+    },
+    "settings": {
+      "java.home": "/usr/lib/jvm/java-17-openjdk-amd64"
+    },
+    "postCreateCommand": "./gradlew build",
+    "features": {
+      "ghcr.io/devcontainers/features/java:1": {
+        "version": "17"
+      }
+    }
+  }
+  
